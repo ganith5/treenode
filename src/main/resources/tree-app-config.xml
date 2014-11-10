@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+
+	
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+	<import resource="classpath:mongo-config.xml"/>
+	<import resource="classpath:security-config.xml"/>
+	
+	<context:component-scan base-package="com.ganith.tree.service"/>
+	
+	<aop:aspectj-autoproxy>
+		<aop:include name="notifyAspect"/>
+	</aop:aspectj-autoproxy>
+	
+	<bean id="notifyAspect" class="com.ganith.tree.aspects.NotifyAspects"></bean>
+	
+	<task:annotation-driven/>
+	<task:executor id="eventExecutor" pool-size="10"/>
+
+</beans>
